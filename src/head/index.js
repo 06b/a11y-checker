@@ -1,53 +1,69 @@
-import {Warning} from '../utils/warn';
-import {isEmpty} from '../utils/string';
-import {
-  getElement, getElements,
-  hasAttribute, getAttribute,
-  doctype, title
-} from '../utils/dom';
+"use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.hasDocumentScalable = exports.hasDocumentMetaCharset = exports.hasDocumentTitle = exports.hasDocumentLanguage = exports.hasDocumentType = void 0;
 
-const hasDocumentType = () => {
-  if (!doctype) Warning('Doctype is missing. Fix: Add <!DOCTYPE html>');
+var _warn = require("../utils/warn");
+
+var _string = require("../utils/string");
+
+var _dom = require("../utils/dom");
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+var hasDocumentType = function hasDocumentType() {
+  if (!_dom.doctype) (0, _warn.Warning)('Doctype is missing. Fix: Add <!DOCTYPE html>');
 };
 
+exports.hasDocumentType = hasDocumentType;
 
-const hasDocumentTitle = () => {
-  if (isEmpty(title)) Warning('Title is missing. Fix: <title>WELL DESCRIBED TITLE</title>');
+var hasDocumentTitle = function hasDocumentTitle() {
+  if ((0, _string.isEmpty)(_dom.title)) (0, _warn.Warning)('Title is missing. Fix: <title>WELL DESCRIBED TITLE</title>');
 };
 
+exports.hasDocumentTitle = hasDocumentTitle;
 
-const hasDocumentLanguage = () => {
-  const HTML = getElement('html');
-  const hasLanguageAttr = hasAttribute(HTML, 'lang');
+var hasDocumentLanguage = function hasDocumentLanguage() {
+  var HTML = (0, _dom.getElement)('html');
+  var hasLanguageAttr = (0, _dom.hasAttribute)(HTML, 'lang');
 
   if (hasLanguageAttr) {
-    const getLanguageValue = getAttribute(HTML, 'lang');
-    const isLanguageValueNotExist = isEmpty(getLanguageValue);
-
-    if (isLanguageValueNotExist) Warning('Language value is missing in HTML element. Fix: Add lang="LANGUAGE VALUE" to <html>');
+    var getLanguageValue = (0, _dom.getAttribute)(HTML, 'lang');
+    var isLanguageValueNotExist = (0, _string.isEmpty)(getLanguageValue);
+    if (isLanguageValueNotExist) (0, _warn.Warning)('Language value is missing in HTML element. Fix: Add lang="LANGUAGE VALUE" to <html>');
   } else {
-    Warning('Language is missing in HTML element. Fix: Add lang="LANGUAGE VALUE" to <html>');
+    (0, _warn.Warning)('Language is missing in HTML element. Fix: Add lang="LANGUAGE VALUE" to <html>');
   }
 };
 
+exports.hasDocumentLanguage = hasDocumentLanguage;
 
-const hasDocumentMetaCharset = () => {
-  const META = [...getElements('meta')];
-  const hasMetaCharset = META.some(tag => hasAttribute(tag, 'charset'));
+var hasDocumentMetaCharset = function hasDocumentMetaCharset() {
+  var META = _toConsumableArray((0, _dom.getElements)('meta'));
 
-  if (!hasMetaCharset) Warning('Document encoding is missing. Fix: Add <meta charset="utf-8"/>');
+  var hasMetaCharset = META.some(function (tag) {
+    return (0, _dom.hasAttribute)(tag, 'charset');
+  });
+  if (!hasMetaCharset) (0, _warn.Warning)('Document encoding is missing. Fix: Add <meta charset="utf-8"/>');
 };
 
+exports.hasDocumentMetaCharset = hasDocumentMetaCharset;
 
-const hasDocumentScalable = () => {
-  const META = [...getElements('meta')];
-  const hasMetaScalable = META.some(el => getAttribute(el, 'user-scalable') === 'no');
+var hasDocumentScalable = function hasDocumentScalable() {
+  var META = _toConsumableArray((0, _dom.getElements)('meta'));
 
-  if (hasMetaScalable) Warning('Document must not use the user-scalable=no. Fix: Remove user-scalable=no from <meta name=viewport>');
+  var hasMetaScalable = META.some(function (el) {
+    return (0, _dom.getAttribute)(el, 'user-scalable') === 'no';
+  });
+  if (hasMetaScalable) (0, _warn.Warning)('Document must not use the user-scalable=no. Fix: Remove user-scalable=no from <meta name=viewport>');
 };
 
-export {
-  hasDocumentType, hasDocumentLanguage,
-  hasDocumentTitle, hasDocumentMetaCharset, hasDocumentScalable
-};
+exports.hasDocumentScalable = hasDocumentScalable;
